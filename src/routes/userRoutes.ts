@@ -9,7 +9,14 @@ export async function userRoutes(app: FastifyInstance) {
   });
 
   app.get("/", async (request, reply) => {
-    return reply.status(201).send("sucesso na sua primeira rota de usuários");
+    try {
+      const users = await knex('users').select()
+
+      return reply.status(200).send({ data: { users }, message: "Success on listing users" });
+    } catch (error) {
+      console.log(" app.post ~ error:", error);
+      return reply.status(500).send("An error has ocurred");
+    }
   });
 
   app.post("/", async (request, reply) => {
