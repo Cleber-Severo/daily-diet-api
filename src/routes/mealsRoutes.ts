@@ -48,4 +48,20 @@ export async function mealsRoutes(app: FastifyInstance) {
       console.log(" app.post ~ error:", error)
     }
   })
+
+  app.post('/delete', async (request, reply) => {
+    try {
+      const createUserSchema = z.object({
+        mealId: z.string()
+      });
+
+      const { mealId } = createUserSchema.parse(request.body);
+
+      await knex('meals').where('id', mealId).delete()
+
+      return reply.status(201).send("Meal has been removed");
+    } catch (error) {
+      console.log(" app.post ~ error:", error)
+    }
+  })
 }
