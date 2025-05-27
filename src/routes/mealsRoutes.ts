@@ -49,6 +49,30 @@ export async function mealsRoutes(app: FastifyInstance) {
     }
   })
 
+
+  app.post('/edit', async (request, reply) => {
+    try {
+      const createUserSchema = z.object({
+        mealId: z.string(),
+        name: z.string(),
+        description: z.string(),
+        isOnDiet: z.boolean()
+      });
+
+      const { mealId, description, isOnDiet, name } = createUserSchema.parse(request.body);
+
+      await knex('meals').update({
+        description,
+        is_on_diet: isOnDiet,
+        name,
+      }).where('id', mealId)
+
+      return reply.status(201).send("Meal updated");
+    } catch (error) {
+      console.log(" app.post ~ error:", error)
+    }
+  })
+
   app.post('/delete', async (request, reply) => {
     try {
       const createUserSchema = z.object({
