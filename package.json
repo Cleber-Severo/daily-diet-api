@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npx vitest",
     "dev": "npx tsx src/server.ts",
     "knex": "node --import tsx ./node_modules/knex/bin/cli.js"
   },
@@ -13,8 +13,11 @@
   "description": "",
   "devDependencies": {
     "@types/node": "^22.15.21",
+    "@types/supertest": "^6.0.3",
+    "supertest": "^7.1.1",
     "tsx": "^4.19.4",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.4"
   },
   "dependencies": {
     "dotenv": "^16.5.0",

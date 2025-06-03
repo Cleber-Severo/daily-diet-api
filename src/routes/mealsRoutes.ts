@@ -60,45 +60,6 @@ export async function mealsRoutes(app: FastifyInstance) {
     }
   });
 
-  type Meal = {
-    is_on_diet: boolean;
-  };
-
-  app.get("/user-info/:userId", async (request, reply) => {
-    try {
-      const listUserMealSchema = z.object({
-        userId: z.string().uuid(),
-      });
-
-      const { userId } = listUserMealSchema.parse(request.params);
-
-      const userFound = await knex("users").where("id", userId).first();
-
-      if (!userFound) {
-        return reply.status(414).send("User not found");
-      }
-
-      const userMealsList = await knex("meals")
-        .select()
-        .where("user_id", userId);
-
-      const mealsAmount = userMealsList.length;
-      const mealsOnDiet = userMealsList.filter(
-        (item: Meal) => !!item.is_on_diet
-      )?.length;
-      const mealsNotOnDiet = userMealsList.filter(
-        (item: Meal) => !item.is_on_diet
-      )?.length;
-
-      return reply
-        .status(200)
-        .send({ data: { mealsAmount, mealsOnDiet, mealsNotOnDiet } });
-    } catch (err) {
-      console.log(err);
-      return reply.status(500).send("Internal error");
-    }
-  });
-
   app.post("/add", async (request, reply) => {
     try {
       const addMealSchema = z.object({
